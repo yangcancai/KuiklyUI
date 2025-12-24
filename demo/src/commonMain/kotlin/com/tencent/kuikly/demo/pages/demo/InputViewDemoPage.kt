@@ -30,6 +30,7 @@ import com.tencent.kuikly.core.views.Input
 import com.tencent.kuikly.core.views.InputView
 import com.tencent.kuikly.core.views.List
 import com.tencent.kuikly.core.views.View
+import com.tencent.kuikly.core.views.compose.Button
 import com.tencent.kuikly.demo.pages.base.BasePager
 import com.tencent.kuikly.demo.pages.demo.base.NavBar
 
@@ -37,52 +38,100 @@ import com.tencent.kuikly.demo.pages.demo.base.NavBar
 internal class InputViewDemoPage : BasePager() {
     lateinit var inputRef: ViewRef<InputView>
     var keyboardHeight: Float by observable(0f)
+    var heigh : Float by observable(0f)
+    override fun created() {
+        val ctx = this
+        super.created()
+        ctx.heigh = ctx.pageData.pageViewHeight - ctx.pageData.statusBarHeight - ctx.pageData.navigationBarHeight - 80
+    }
+    var isAnimation: Boolean by observable(false)
     override fun body(): ViewBuilder {
         val ctx = this
         return {
             attr {
-                backgroundColor(Color(0xFF3c6cbdL))
+//                overflow(true)
+//                backgroundColor(Color(0xFF3c6cbdL))
 
             }
             // 背景图
-            Image {
-                attr {
-                    absolutePosition(0f, 0f, 0f, 0f)
-                    src("https://sqimg.qq.com/qq_product_operations/kan/images/viola/viola_bg.jpg")
-                }
-            }
+//            Image {
+//                attr {
+//                    absolutePosition(0f, 0f, 0f, 0f)
+//                    src("https://sqimg.qq.com/qq_product_operations/kan/images/viola/viola_bg.jpg")
+//                }
+//            }
             // navBar
             NavBar {
                 attr {
                     title = "Input组件Demo"
                 }
             }
-
             View {
-                attr {
-                    flex(1f)
+                attr{
+                    size(ctx.pageData.pageViewWidth, ctx.pageData.pageViewHeight - ctx.pageData.statusBarHeight - 44 - ctx.keyboardHeight)
+                    overflow(true)
                 }
-
-                List {
+                View {
                     attr {
-                        height(200f)
-                        backgroundColor(Color.BLUE)
                         flex(1f)
-                    }
-                    View {
-                        attr {
-                            height(200f)
-                            backgroundColor(Color.BLACK)
+                        justifyContentSpaceBetween()
+                        transform(Translate(0f, 0f, 0f, -ctx.keyboardHeight))
+                        animation(Animation.easeIn(1f), ctx.keyboardHeight)
+                        if (ctx.isAnimation) {
+                            backgroundColor(Color.BLUE)
+                        } else {
+                            backgroundColor(Color.GRAY)
                         }
                     }
-
-                    View {
+                    List {
                         attr {
-                            height(200f)
-                            backgroundColor(Color.GREEN)
+                            height(20f)
+                            flex(1f)
+                        }
+                        View {
+                            attr {
+                                height(10f)
+                                backgroundColor(Color.BLUE)
+                            }
+
+                        }
+                        View {
+                            attr {
+                                height(10f)
+                                backgroundColor(Color.YELLOW)
+                            }
+
+                        }
+                        View {
+                            attr {
+                                height(10f)
+                                backgroundColor(Color.GREEN)
+                            }
+
+                        }
+
+                    }
+                    Button {
+                        attr {
+                            titleAttr {
+                                text("点击")
+                            }
+                        }
+                        event {
+                            click {
+                                if (ctx.keyboardHeight > 0) {
+                                    ctx.keyboardHeight = 0f
+                                    ctx.heigh =
+                                        ctx.pageData.pageViewHeight - ctx.pageData.statusBarHeight - 80
+                                } else {
+                                    ctx.keyboardHeight = 100f
+                                    ctx.heigh =
+                                        ctx.pageData.pageViewHeight - ctx.pageData.statusBarHeight - 80 - 100
+                                }
+                                ctx.isAnimation = !ctx.isAnimation
+                            }
                         }
                     }
-
                     Input {
 
                         ref {
@@ -106,8 +155,7 @@ internal class InputViewDemoPage : BasePager() {
                             autofocus(true)
                             backgroundColor(Color.RED)
 
-                            transform(Translate(0f, -ctx.keyboardHeight / 200f))
-                            animation(Animation.easeIn(0.3f), ctx.keyboardHeight)
+
                         }
 
                         event {
@@ -131,24 +179,7 @@ internal class InputViewDemoPage : BasePager() {
                         }
                     }
 
-                    View {
-                        attr {
-                            height(200f)
-                            backgroundColor(Color.BLACK)
-
-                            allCenter()
-                        }
-                    }
-
-                    View {
-                        attr {
-                            height(200f)
-                            backgroundColor(Color.GREEN)
-                        }
-                    }
-
                 }
-
             }
         }
     }

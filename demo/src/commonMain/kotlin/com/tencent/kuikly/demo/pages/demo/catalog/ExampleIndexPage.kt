@@ -55,6 +55,18 @@ internal class ExampleIndexPage : BasePager() {
 
     override fun created() {
         itemList.add(ExampleItemData().apply {
+            avatarText = "OF"
+            titleText = "overflow"
+            subtitleText = "OverflowDemoPage"
+            declarativeExampleUrl = generateJumpUrl("OverflowDemoPage")
+        })
+        itemList.add(ExampleItemData().apply {
+            avatarText = "vf"
+            titleText = "vforLazy"
+            subtitleText = "VforLazy"
+            declarativeExampleUrl = generateJumpUrl("vforlazy")
+        })
+        itemList.add(ExampleItemData().apply {
             avatarText = "App"
             titleText = "App Demo"
             subtitleText = "现提供信息Feed流，功能不断完善中"
@@ -138,6 +150,12 @@ internal class ExampleIndexPage : BasePager() {
             declarativeExampleUrl = generateJumpUrl("ButtonExamplePage")
         })
 
+        itemList.add(ExampleItemData().apply {
+            avatarText = "Li"
+            titleText = "ListView1"
+            subtitleText = "Scroller基础上实现无Diff的View粒度复用、原生性能的无限流列表"
+            declarativeExampleUrl = generateJumpUrl("ListExamplePage1")
+        })
         // 缺少一个scroller
 
         itemList.add(ExampleItemData().apply {
